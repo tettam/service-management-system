@@ -3,6 +3,7 @@ package com.backservice.backservicemanagement.service;
 import com.backservice.backservicemanagement.entity.Services;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,10 @@ public class ServiceService {
 
   public List<Services> findAll(){
     return repository.findAll();
+  }
+
+  public List<Services> findServicePendingPayment(){
+    return repository.findServicePendingPayment();
   }
 
   public Services insert(Services obj){
@@ -42,4 +47,18 @@ public class ServiceService {
     Services service = repository.findById(id).get();
     repository.delete(service);
   }
+
+  //Status canceled
+  /* 
+  public List<Services> findAllCanceled(){
+    List<Services> listCanceled = new ArrayList<>();
+    List<Services> list = repository.findAll();
+    for (Services obj : list) {
+      if(obj.getStatus() == "canceled") {
+        listCanceled.add(obj);
+      }
+    }
+    return listCanceled;
+  }
+  */
 }
