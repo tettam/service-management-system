@@ -3,7 +3,6 @@ package com.backservice.backservicemanagement.service;
 import com.backservice.backservicemanagement.entity.Services;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,23 +21,30 @@ public class ServiceService {
     return repository.findAll();
   }
 
+  //List status pending
   public List<Services> findServicePendingPayment(){
     return repository.findServicePendingPayment();
   }
 
+  //List status performed
+  public List<Services> findServiceCanceledPayment(){
+    return repository.findServiceCanceledPayment();
+  }
+
+
   public Services insert(Services obj){
     if(obj.getAmountPaid() == null || obj.getAmountPaid().compareTo(BigDecimal.ZERO) == 0 || obj.getPayDate() == null){
-      obj.setStatus("pendente!");
+      obj.setStatus("pending!");
     }
     else {
-      obj.setStatus("realizado!");
+      obj.setStatus("performed!");
     }
     return repository.saveAndFlush(obj);
   }
 
   public Services update(Services obj){
     if(obj.getAmountPaid() != null && obj.getAmountPaid().compareTo(BigDecimal.ZERO) > 0 || obj.getPayDate() != null) {
-      obj.setStatus("realizado!");
+      obj.setStatus("performed!");
     }
     return repository.saveAndFlush(obj);
   }
@@ -47,18 +53,4 @@ public class ServiceService {
     Services service = repository.findById(id).get();
     repository.delete(service);
   }
-
-  //Status canceled
-  /* 
-  public List<Services> findAllCanceled(){
-    List<Services> listCanceled = new ArrayList<>();
-    List<Services> list = repository.findAll();
-    for (Services obj : list) {
-      if(obj.getStatus() == "canceled") {
-        listCanceled.add(obj);
-      }
-    }
-    return listCanceled;
-  }
-  */
 }

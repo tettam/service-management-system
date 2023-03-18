@@ -11,4 +11,7 @@ public interface ServiceRepository extends JpaRepository<Services, Long>{
   
   @Query("select s from Services s where s.amountPaid <> null and s.amountPaid > 0")
   List<Services> findServicePendingPayment();
+
+  @Query("select s from Services s where s.status = 'canceled'")
+  List<Services> findServiceCanceledPayment();
 }
