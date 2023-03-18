@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import com.backservice.backservicemanagement.repository.ServiceRepository;
 
 @Service
-public class ServiceService {
+public class ServicesService {
   
   @Autowired
   private ServiceRepository repository;
@@ -30,7 +30,6 @@ public class ServiceService {
   public List<Services> findServiceCanceledPayment(){
     return repository.findServiceCanceledPayment();
   }
-
 
   public Services insert(Services obj){
     if(obj.getAmountPaid() == null || obj.getAmountPaid().compareTo(BigDecimal.ZERO) == 0 || obj.getPayDate() == null){
