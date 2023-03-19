@@ -9,9 +9,18 @@ function Service() {
     amountPaid:'',
     payDate:'',
     initialDate:'',
-    endDate:''
+    endDate:'',
+    serviceValue:'',
+    status:'',
   })
   const [services, setServices] = useState([])
+  const [update, setUpdate] = useState()
+
+  useEffect(()=> {
+    axios.get("http://localhost:8080/api/services/").then(result => {
+      setServices(result.data)
+    })
+  }, [update])
 
   function handleChange(event){
     setService({...service,[event.target.name]:event.target.value})
@@ -20,7 +29,7 @@ function Service() {
   function handleSubmit(event){
     event.preventDefault();
     axios.post('http://localhost:8080/api/services/', service).then(result => {
-      console.log(result)
+      setUpdate(result) //Atualizar
     })
   }
 
@@ -65,6 +74,15 @@ function Service() {
               className='form-control'/>
           </div>
           <div>
+            <label className='form-label'>Valor do Serviço</label>
+            <input onChange={handleChange} 
+              value={service.serviceValue} 
+              name="serviceValue" 
+              type="number" 
+              className='form-control'
+            />
+          </div>
+          <div>
             <label className='form-label'>Valor Pago</label>
             <input onChange={handleChange} 
               value={service.amountPaid} 
@@ -87,6 +105,37 @@ function Service() {
           <input type="submit" value="Cadastrar" className='btn btn-success' />
         </div>
       </form>
+
+      <hr /><hr />
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Nome</th>
+            <th scope="col">Descrição</th>
+            <th scope="col">Valor do Serviço</th>
+            <th scope="col">Status</th>
+            <th scope="col">Opções</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            services.map(obj => (
+              <tr>
+                <th>{obj.name}</th>
+                <td>{obj.description}</td>
+                <td>{obj.serviceValue}</td>
+                <td>{obj.status}</td>
+                <td>
+                  <button className='btn btn-primary btn-sm'>Alterar</button> &nbsp;&nbsp;
+                  <button className='btn btn-danger btn-sm'>Excluir</button>  &nbsp;&nbsp;
+                  <button className='btn btn-warning btn-sm'>Cancelar</button>
+                </td>
+              </tr>
+            )
+          )}
+        </tbody>
+      </table>
     </div>
   )
 }

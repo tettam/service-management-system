@@ -32,12 +32,14 @@ public class ServicesController {
   }
 
   @GetMapping("/pedingPayment")
+  @CrossOrigin("http://localhost:5173")
   public ResponseEntity<List<Services>> findServicePendingPaymen(){
     List<Services> list = service.findServicePendingPayment();
     return ResponseEntity.ok().body(list);
   }
 
   @GetMapping("/canceledPayment")
+  @CrossOrigin("http://localhost:5173")
   public ResponseEntity<List<Services>> findServiceCanceledPayment(){
     List<Services> list = service.findServiceCanceledPayment();
     return ResponseEntity.ok().body(list);
@@ -45,6 +47,7 @@ public class ServicesController {
 
   //Cancel services
   @PostMapping("/{id}")
+  @CrossOrigin("http://localhost:5173")
   public ResponseEntity<Void> canceledService(@PathVariable("id") Long id){
     service.canceledService(id);
     return ResponseEntity.ok().build();
@@ -58,12 +61,14 @@ public class ServicesController {
   }
 
   @PutMapping("/")
+  @CrossOrigin("http://localhost:5173")
   public ResponseEntity<Services> update(@RequestBody Services obj){
     Services newObj = service.update(obj);
     return ResponseEntity.ok().body(newObj);
   }
 
   @DeleteMapping("/{id}")
+  @CrossOrigin("http://localhost:5173")
   public ResponseEntity<Void> delete(@PathVariable ("id") Long id){
     service.delete(id);
     return ResponseEntity.ok().build();

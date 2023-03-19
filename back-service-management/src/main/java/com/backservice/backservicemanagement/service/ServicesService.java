@@ -33,10 +33,10 @@ public class ServicesService {
 
   public Services insert(Services obj){
     if(obj.getAmountPaid() == null || obj.getAmountPaid().compareTo(BigDecimal.ZERO) == 0 || obj.getPayDate() == null){
-      obj.setStatus("pending!");
+      obj.setStatus("pending");
     }
     else {
-      obj.setStatus("performed!");
+      obj.setStatus("performed");
     }
     //obj.setInitialDate(LocalDate.now());
     return repository.saveAndFlush(obj);
@@ -44,7 +44,7 @@ public class ServicesService {
 
   public Services update(Services obj){
     if(obj.getAmountPaid() != null && obj.getAmountPaid().compareTo(BigDecimal.ZERO) > 0 || obj.getPayDate() != null) {
-      obj.setStatus("performed!");
+      obj.setStatus("performed");
     }
     return repository.saveAndFlush(obj);
   }
