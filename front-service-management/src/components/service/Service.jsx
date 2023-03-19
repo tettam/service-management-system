@@ -127,8 +127,13 @@ function Service() {
                 <td>{obj.serviceValue}</td>
                 <td>{obj.status}</td>
                 <td>
-                  <button className='btn btn-primary btn-sm'>Alterar</button> &nbsp;&nbsp;
-                  <button className='btn btn-danger btn-sm'>Excluir</button>  &nbsp;&nbsp;
+                  {obj.status != 'canceled' && 
+                    <button onClick={()=> setService(obj)} className='btn btn-primary btn-sm'>Alterar</button> 
+                  }&nbsp;&nbsp;
+                  {obj.status != 'canceled' && 
+                    <button className='btn btn-danger btn-sm'>Excluir</button>
+                  }&nbsp;&nbsp;
+
                   <button className='btn btn-warning btn-sm'>Cancelar</button>
                 </td>
               </tr>
