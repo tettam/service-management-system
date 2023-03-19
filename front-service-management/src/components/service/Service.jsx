@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import './Service.css'
+import axios from 'axios'
 
 function Service() {
   const [service, setService] = useState({
@@ -18,7 +19,9 @@ function Service() {
 
   function handleSubmit(event){
     event.preventDefault();
-    console.log(service)
+    axios.post('http://localhost:8080/api/services/', service).then(result => {
+      console.log(result)
+    })
   }
 
   return (
