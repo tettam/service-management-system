@@ -21,7 +21,7 @@ public class Services {
 
   private String name;
   private String description;
-  private LocalDate initialDate;
+  private LocalDate initialDate = LocalDate.now();
   private LocalDate endDate;
 
   private BigDecimal serviceValue;

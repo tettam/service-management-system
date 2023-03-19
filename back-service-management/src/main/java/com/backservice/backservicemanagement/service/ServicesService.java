@@ -38,6 +38,7 @@ public class ServicesService {
     else {
       obj.setStatus("performed!");
     }
+    //obj.setInitialDate(LocalDate.now());
     return repository.saveAndFlush(obj);
   }
 
@@ -51,5 +52,11 @@ public class ServicesService {
   public void delete(Long id){
     Services service = repository.findById(id).get();
     repository.delete(service);
+  }
+
+  public void canceledService(Long id){
+    Services obj = repository.findById(id).get();
+    obj.setStatus("canceled");
+    repository.saveAndFlush(obj);
   }
 }
