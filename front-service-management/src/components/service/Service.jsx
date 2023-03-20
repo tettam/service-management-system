@@ -26,12 +26,68 @@ function Service() {
     setService({...service,[event.target.name]:event.target.value})
   }
 
-  function handleSubmit(event){
-    event.preventDefault();
-    axios.post('http://localhost:8080/api/services/', service).then(result => {
-      setUpdate(result) //Atualizar
+  function findAll(){
+    axios.get("http://localhost:8080/api/services/").then(result => {
+      setServices(result.data)
     })
   }
+
+  function pendingAll(){
+    axios.get("http://localhost:8080/api/services/pedingPayment").then(result => {
+      setServices(result.data)
+    })
+  }
+
+  function canceledAll(){
+    axios.get("http://localhost:8080/api/services/canceledPayment").then(result => {
+      setServices(result.data)
+    })
+  }
+
+  function clean(){
+    setService({
+      name:'', 
+      description:'',
+      amountPaid:'',
+      payDate:'',
+      initialDate:'',
+      endDate:'',
+      serviceValue:'',
+      status:'',
+    })
+  }
+
+  function deleteObj(id){
+    axios.delete(`http://localhost:8080/api/services/${id}`).then(result => {
+      setUpdate(result)
+    })
+  }
+
+  function canceledObj(id){
+    axios.post(`http://localhost:8080/api/services/${id}`).then(result => {
+      setUpdate(result)
+    })
+  }
+
+  function handleSubmit(event){
+    event.preventDefault();
+    if(service.id == undefined) {
+        axios
+        .post('http://localhost:8080/api/services/', service)
+        .then(result => {
+        setUpdate(result) //Atualizar
+      })
+    }
+    else {
+        axios
+        .put('http://localhost:8080/api/services/', service)
+        .then(result => {
+        setUpdate(result) //Atualizar
+      })
+    }
+    clean()
+  }
+
 
   return (
     <div className='container'>
@@ -50,7 +106,7 @@ function Service() {
           <div>
             <label className='form-label'>Data de Início</label>
             <input onChange={handleChange} 
-              value={service.initialDate} 
+              value={service.initialDate || ''} 
               name="initialDate"
               type="date"
                className='form-control'
@@ -59,7 +115,7 @@ function Service() {
           <div>
             <label className='form-label'>Data de Término</label>
             <input onChange={handleChange} 
-              value={service.endDate}
+              value={service.endDate || ''}
               name="endDate" 
               type="date" 
               className='form-control'
@@ -68,7 +124,7 @@ function Service() {
           <div>
             <label className='form-label'>Descrição do Serviço</label>
             <input onChange={handleChange}
-              value={service.description} 
+              value={service.description || ''} 
               name="description" 
               type="text" 
               className='form-control'/>
@@ -76,7 +132,7 @@ function Service() {
           <div>
             <label className='form-label'>Valor do Serviço</label>
             <input onChange={handleChange} 
-              value={service.serviceValue} 
+              value={service.serviceValue || ''} 
               name="serviceValue" 
               type="number" 
               className='form-control'
@@ -85,7 +141,7 @@ function Service() {
           <div>
             <label className='form-label'>Valor Pago</label>
             <input onChange={handleChange} 
-              value={service.amountPaid} 
+              value={service.amountPaid || ''} 
               name="amountPaid" 
               type="number" 
               className='form-control'
@@ -94,7 +150,7 @@ function Service() {
           <div>
             <label className='form-label'>Data de Pagamento</label>
             <input onChange={handleChange} 
-              value={service.payDate} 
+              value={service.payDate || ''} 
               name="payDate" 
               type="date" 
               className='form-control'
@@ -107,6 +163,9 @@ function Service() {
       </form>
 
       <hr /><hr />
+      <button onClick={() => findAll()} type="button" class="btn btn-primary">Todos os serviços</button>
+      <button onClick={() => pendingAll()} type="button" class="btn btn-secondary">Pagamentos Pendentes</button>
+      <button onClick={() => canceledAll()}type="button" class="btn btn-success">Serviços Cancelados</button>
 
       <table class="table">
         <thead>
@@ -131,10 +190,9 @@ function Service() {
                     <button onClick={()=> setService(obj)} className='btn btn-primary btn-sm'>Alterar</button> 
                   }&nbsp;&nbsp;
                   {obj.status != 'canceled' && 
-                    <button className='btn btn-danger btn-sm'>Excluir</button>
+                    <button onClick={()=> deleteObj(obj.id)} className='btn btn-danger btn-sm'>Excluir</button>
                   }&nbsp;&nbsp;
-
-                  <button className='btn btn-warning btn-sm'>Cancelar</button>
+                  <button onClick={()=> canceledObj(obj.id)} className='btn btn-warning btn-sm'>Cancelar</button>
                 </td>
               </tr>
             )
